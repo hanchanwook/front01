@@ -1,0 +1,81 @@
+/* 방명록 수정 컨테이너 */
+.guestbook-update-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px 24px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.guestbook-update-container h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+}
+
+.guestbook-update-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.guestbook-update-container .detail-label {
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #444;
+}
+
+.guestbook-update-container input[type="text"],
+.guestbook-update-container input[type="email"],
+.guestbook-update-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #f9f9f9;
+    transition: border 0.2s;
+}
+
+.guestbook-update-container input[type="text"]:focus,
+.guestbook-update-container input[type="email"]:focus,
+.guestbook-update-container textarea:focus {
+    border: 1.5px solid #7b6ff2;
+    outline: none;
+}
+
+.guestbook-update-container input[type="file"] {
+    margin-top: 6px;
+}
+
+.guestbook-update-container .buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.guestbook-update-container button {
+    flex: 1;
+    padding: 10px 0;
+    background: #7b6ff2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.guestbook-update-container button:hover {
+    background: #5a4bcf;
+}
+
+.guestbook-update-container .back-button {
+    background: #6c757d;
+}
+
+.guestbook-update-container .back-button:hover {
+    background: #5a6268;
+}

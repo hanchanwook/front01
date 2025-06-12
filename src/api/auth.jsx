@@ -1,0 +1,122 @@
+import {api} from "./http";
+import axios from "axios";
+import { API_BASE_URL } from "../config";
+import { getToken } from "../utils/token";
+
+// 스프링 서버에 보낼 것을 모아 놓은 것
+// 1. 로그인
+export const login = (m_id, m_pw) => 
+    api.post("/members/login",{m_id, m_pw}) // POST /members/login 엔드포인트로 {m_id, m_pw}를 가지고 로그인 요청을 보냄
+
+// 2. 회원가입
+export const register = (member) =>
+    api.post("/members/register", member) // POST /members/register 엔드포인트로 member 객체를 가지고 회원가입 요청을 보냄
+
+// 3. 마이페이지
+//export const myPage = (m_idx) => 
+//    api.post("/members/mypage", {m_idx}) // POST /members/mypage 엔드포인트로 {m_idx}를 가지고 마이페이지 요청을 보냄 
+
+export const myPage =() =>
+    api.get("/members/mypage")
+
+// 4. 방명록 목록 조회
+export const getGuestBookList = () =>
+    api.get("/guestbook/guestbooklist")
+
+// 5. 방명록 상세 내역
+export const getGuestBookDetail = (id) => {
+    return api.get("/guestbook/guestbookdetail", {
+      params: { gb_idx: id }
+    });
+  };
+
+// 6. 방명록 작성
+export const guestBookWrite = (formData) =>
+    api.post("/guestbook/guestbookwrite", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    });  
+
+// 7. 방명록 삭제
+export const deleteGuestBook = (gb_idx) =>
+    api.post("/guestbook/guestbookdelete", null, {
+        params: { gb_idx }
+    });
+
+// 8. 방명록 수정
+export const guestBookUpdate = async (formData) => {
+    try {
+        console.log('[guestBookUpdate] 호출됨');
+        console.log('formData entries:');
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+        
+        const response = await axios.post(
+            `${API_BASE_URL}/api/guestbook/guestbookupdate`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${getToken()}`
+                }
+            }
+        );
+        return response;
+    } catch (error) {
+        console.error('방명록 수정 중 오류:', error);
+        throw error;
+    }
+};
+//  인터셉터
+//  1. 모든 요청을 가로 챈다 - 요청이 발생하면 인터셉터에서 config 객체를 확인한다.
+//  2. 특수 요청 제외 - login, register
+//  3. 제외한 나머지는 Header에 JWT 토큰이 자동으로 추가되게 하자
+api.interceptors.request.use(
+    (config) => {
+        const excludePaths = ["/members/login","/members/register"]; // 인터셉터에서 제외 됨
+            if(!excludePaths.includes(config.url)){
+                const tokens = localStorage.getItem("tokens");
+                if(tokens){
+                    const parsed = JSON.parse(tokens);      // 객체로 파싱
+                    if(parsed.accessToken){
+                        config.headers.Authorization = `Bearer ${parsed.accessToken}`   // 문자열로 출력됨
+                    }
+            }
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+api.interceptors.response.use(
+    // 정상적인 응담은 통과
+    res => res , 
+    async (error) => {
+        const {config, response} = error;
+        //  401 에러 => accessToken 만료되면
+        if(response?.status === 401 && !config._retry){
+            config._retry = true;   //  한 번만 재시도하도록 설정
+            try {
+                const tokens = JSON.parse(localStorage.getItem("tokens"));
+                const result = await api.post("/members/refresh",{
+                    refreshToken : tokens.refreshToken
+                });
+                const {accessToken, refreshToken} = result.data.data;
+                localStorage.setItem("tokens", JSON.stringify({accessToken, refreshToken}));
+                
+                config.headers.Authorization = `Bearer ${accessToken}`;
+                return api(config);
+
+            } catch (error) {
+                localStorage.clear();
+                window.location.href = "/login";
+            }
+        }
+        return Promise.reject(error);
+    }
+)
+
+
+
