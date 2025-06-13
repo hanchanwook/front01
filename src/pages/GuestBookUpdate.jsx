@@ -6,9 +6,10 @@ import { guestBookUpdate } from '../api/auth';
 export default function GuestBookUpdate(){
     const location = useLocation();
     const { id: gb_idx } = useParams();
-    console.log("useParams로 받은 gb_idx:", gb_idx);
     const navigate = useNavigate();
     const bookData = location.state?.bookData;
+    
+    console.log("useParams로 받은 gb_idx:", gb_idx);
 
     const [gb_name, setGb_name] = useState(bookData?.gb_name || '');
     const [gb_email, setGb_email] = useState(bookData?.gb_email || '');
@@ -24,9 +25,10 @@ export default function GuestBookUpdate(){
             gb_email: gb_email,
             gb_subject: gb_subject,
             gb_content: gb_content,
-            gb_f_name: gb_f_name
+
         };
 
+        
         try {
             console.log(gb_idx);
             // FormData 객체 생성
@@ -35,6 +37,15 @@ export default function GuestBookUpdate(){
             formData.append('guestbook', new Blob([JSON.stringify(guestbook)], {
                 type: 'application/json'
             }));
+            
+            // 파일이 새로 선택된 경우에만 append
+            if(gb_f_name && gb_f_name instanceof File){
+                formData.append('file', gb_f_name);
+            }
+
+            for (let pair of formData.entries()) {
+                console.log(pair[0], pair[1]);
+            }
 
             const response = await guestBookUpdate(formData);
             if(response.data.success){
@@ -105,7 +116,7 @@ export default function GuestBookUpdate(){
                         />
                     </div>
                     <div className="buttons">
-                        <button type="button" className="back-button" onClick={() => navigate("/guestbook")}>목록으로 돌아가기</button>
+                        <button type="button" className="back-button" onClick={() => navigate(`/bookdetail/${gb_idx}`)}>취소</button>
                         <button type="submit" className="update-button">수정하기</button>
                     </div>
                 </div>

@@ -24,6 +24,16 @@
     border-bottom: 1px solid #eee;
 }
 
+.detail-item img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    margin-right: 16px;
+    object-fit: cover;
+    background: #f4f4f4;
+}
+
 .detail-label {
     width: 120px;
     font-weight: bold;

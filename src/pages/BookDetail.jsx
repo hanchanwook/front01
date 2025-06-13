@@ -84,6 +84,9 @@ export default function BookDetail(){
                 </div>
                 <div className="detail-item">
                     <span className="detail-label">첨부파일</span>
+                    {book.gb_f_name && (
+                        <img src={`http://localhost:8080/guestbook/${book.gb_f_name}`} alt="첨부이미지" />
+                    )}
                     <span className="detail-value">{book.gb_f_name}</span>
                 </div>
                 <div className="detail-content">
