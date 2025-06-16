@@ -67,6 +67,25 @@ export const guestBookUpdate = async (formData) => {
         throw error;
     }
 };
+
+// 9. 방명록 첨부파일 이미지 조회
+export const getGuestBookImage = async (gb_f_name) => {
+    const response = await api.get(`/api/guestbook/guestbookimage/${gb_f_name}`, {
+        responseType: 'blob'
+    });
+    return response;
+}
+
+// 10. 방명록 첨부파일 다운로드
+export const downloadFile = async (gb_f_name) => {
+    const response = await api.get(`/api/guestbook/guestbookdownload/${gb_f_name}`, {
+        responseType: 'blob'
+    });
+
+    return response;
+}
+
+
 //  인터셉터
 //  1. 모든 요청을 가로 챈다 - 요청이 발생하면 인터셉터에서 config 객체를 확인한다.
 //  2. 특수 요청 제외 - login, register

@@ -1,8 +1,9 @@
 import '../styles/bookdetail.css';
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getGuestBookDetail, deleteGuestBook } from "../api/auth";
+import { getGuestBookDetail, deleteGuestBook, downloadFile } from "../api/auth";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 export default function BookDetail(){
     const navigate = useNavigate();
@@ -16,6 +17,11 @@ export default function BookDetail(){
                 const response = await getGuestBookDetail(gb_idx);
                 if(response.data.success){
                     setBook(response.data.data);
+                    // 이미지 미리 로드
+                    if (response.data.data.gb_f_name) {
+                        const img = new Image();
+                        img.src = `${API_BASE_URL}/api/guestbook/guestbookimage/${response.data.data.gb_f_name}`;
+                    }
                 } else{
                     setError(response.data.message);
                 }
@@ -53,6 +59,26 @@ export default function BookDetail(){
         });
     };
 
+    const handleDownload = async () => {
+        if(book.gb_f_name){
+            try {
+                const response = await downloadFile(book.gb_f_name);
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = book.gb_f_name;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            } catch (error) {
+                console.error("파일 다운로드 중 오류 발생:", error);
+                alert('파일 다운로드 중 오류가 발생했습니다.');
+            }
+        } else {
+            alert('첨부파일이 없습니다.');
+        }
+    }
+
     if (error) return <div>에러 발생: {error}</div>;
     if (!book) return <div>Loading...</div>;
 
@@ -85,7 +111,7 @@ export default function BookDetail(){
                 <div className="detail-item">
                     <span className="detail-label">첨부파일</span>
                     {book.gb_f_name && (
-                        <img src={`http://localhost:8080/guestbook/${book.gb_f_name}`} alt="첨부이미지" />
+                        <img src={`${API_BASE_URL}/api/guestbook/guestbookimage/${book.gb_f_name}`} alt="첨부이미지" />
                     )}
                     <span className="detail-value">{book.gb_f_name}</span>
                 </div>
@@ -96,6 +122,7 @@ export default function BookDetail(){
                     <button className="back-button" onClick={() => navigate("/guestbook")}>목록으로 돌아가기</button>
                     <button className="delete-button" onClick={handleDelete}>방명록 삭제</button>
                     <button className="update-button" onClick={handleUpdate}>방명록 수정</button>
+                    <button className="download-button" onClick={handleDownload}>첨부파일 다운로드</button>
                 </div>
             </div>
         </div>
