@@ -46,7 +46,7 @@ export default function Header() {
                 {/* 가운데 : 방명록, 게시판, 고객센터 */}
                 <div className="header-center">
                     <Link to="/guestbook"> 방명록 </Link>
-                    <Link to="/bbs"> 게시판 </Link>
+                    <Link to="/boardlist"> 게시판 </Link>
                     <Link to="/support"> 고객센터 </Link>
                 </div>
                 {/* 오른쪽 : 로그인, 회원가입, 로그아웃 */}

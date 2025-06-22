@@ -20,13 +20,13 @@ export default function Login() {
     const handleLogin = async()=>{
         try {                                         // auth에 있는 ID / PW를 가져온다
           const response = await login(m_id, m_pw);   // 상수 response 선언, login 함수 호출 및 응답 대기, m_id와 m_pw로 인자 전달 
-        //  const m_idx = response.data.data.m_id;    // 상수 m_idx 선언, response.data.data에서 m_id 추출
-        //  const m_name = response.data.data.m_name; // 상수 m_name 선언, response.data.data에서 m_name 추출
-          console.log(response);                      // 응답 결과를 콘솔에 출력      
-          const {accessToken, refreshToken} = response.data.data ; 
+          console.log("백엔드 전체 응답:", response); // 응답 전체 확인
+          console.log("실제 데이터:", response.data.data); // 실제 데이터 확인
+          const {accessToken, refreshToken, m_id: userId, m_name} = response.data.data ; 
 
-          //  localStorage 저장하기, 토큰만 저장
+          //  localStorage 저장하기, 토큰과 사용자 정보 저장
           localStorage.setItem("tokens", JSON.stringify({ accessToken, refreshToken }));
+          localStorage.setItem("userInfo", JSON.stringify({ m_id: userId, m_name }));
 
           // 로그인 성공 시, home 페이지로 이동
           // 단, 이동 전에 로그인 성공했다고 기억해야 된다. (localStorage에 저장)

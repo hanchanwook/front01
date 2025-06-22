@@ -85,11 +85,57 @@ export const downloadFile = async (gb_f_name) => {
     return response;
 }
 
+// 11. 게시판 목록 조회
+export const getBoardList = async (page = 0, size = 10) => {
+    console.log(`getBoardList 호출 (page: ${page}, size: ${size})`);
+    const response = await api.get("/board/boardlist", {
+        params: { page, size }
+    });
+    console.log("getBoardList 응답:", response.data);
+    return response;
+}
+
+// 12. 게시판 상세 조회
+export const getBoardDetail = async (id) => {
+    console.log("getBoardDetail 호출");
+    const response = await api.get("/board/boarddetail", {
+        params: { b_idx: id }
+    });
+    console.log("getBoardDetail 응답:", response.data);
+    return response;
+}
+
+// 13. 게시판 삭제
+export const boardDelete = async (boardVO) => {
+    console.log("boardDelete 호출", boardVO);
+    const response = await api.post("/board/boarddelete", boardVO); // boardVO 객체를 body에 담아 전송
+    console.log("boardDelete 응답:", response.data);
+    return response;
+}
+
+// 14. 게시판 수정
+export const boardUpdate = async (formData) => {
+    console.log("boardUpdate 호출");
+    const response = await api.post("/board/boardupdate", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    });
+    console.log("boardUpdate 응답:", response.data);
+    return response;
+}
+
+// 15. 게시판 작성
+export const boardInsert = async (formData) => {
+    console.log("boardInsert 호출");
+    const response = await api.post("/board/boardinsert", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    });
+    console.log("boardInsert 응답:", response.data);
+    return response;
+}
 
 //  인터셉터
 //  1. 모든 요청을 가로 챈다 - 요청이 발생하면 인터셉터에서 config 객체를 확인한다.
 //  2. 특수 요청 제외 - login, register
-//  3. 제외한 나머지는 Header에 JWT 토큰이 자동으로 추가되게 하자
 api.interceptors.request.use(
     (config) => {
         const excludePaths = ["/members/login","/members/register"]; // 인터셉터에서 제외 됨

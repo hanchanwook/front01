@@ -15,6 +15,10 @@ import GuestBook from './pages/GuestBook';
 import BookDetail from './pages/BookDetail';
 import GuestBookWrite from './pages/GuestBookWrite';
 import GuestBookUpdate from './pages/GuestBookUpdate';
+import BoardList from './pages/BoardList';
+import BoardDetail from './pages/BoardDetail';
+import BoardInsert from './pages/BoardInsert';
+import BoardUpdate from './pages/BoardUpdate';
 
 function App() {
  
@@ -42,7 +46,11 @@ function App() {
               <Route path="/bookdetail/:id" element={<BookDetail />} />
               <Route path="/guestbookwrite" element={<GuestBookWrite />} />
               <Route path="/guestbookupdate/:id" element={<GuestBookUpdate />} />
-              </Routes>
+              <Route path="/boardlist" element={<BoardList />} />
+              <Route path="/boarddetail/:id" element={<BoardDetail />} />
+              <Route path="/boardinsert" element={<BoardInsert />} />
+              <Route path="/boardupdate/:id" element={<BoardUpdate />} />
+            </Routes>
           </div>
           <Footer />
         </BrowserRouter>

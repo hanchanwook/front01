@@ -18,4 +18,23 @@ export const setToken = (accessToken, refreshToken) => {
 // 토큰 삭제하기
 export const removeToken = () => {
     localStorage.removeItem('tokens');
+};
+
+// 사용자 정보 가져오기
+export const getUserInfo = () => {
+    const userInfo = localStorage.getItem('userInfo');
+    if (userInfo) {
+        return JSON.parse(userInfo);
+    }
+    return null;
+};
+
+// 사용자 정보 저장하기
+export const setUserInfo = (userInfo) => {
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+};
+
+// 사용자 정보 삭제하기
+export const removeUserInfo = () => {
+    localStorage.removeItem('userInfo');
 }; 

@@ -1,0 +1,139 @@
+.board-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.board-detail-title {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    font-size: 24px;
+    color: #333;
+}
+
+.board-detail-content {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.detail-item {
+    display: flex;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-label {
+    width: 120px;
+    font-weight: bold;
+    color: #555;
+}
+
+.detail-value {
+    flex: 1;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* 내용 부분에 대한 특별한 스타일 */
+.detail-item:nth-child(4) .detail-value {
+    white-space: pre-wrap;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    min-height: 150px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.back-button, .delete-button, .update-button {
+    padding: 8px 16px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+}
+
+.back-button {
+    background-color: #6c757d;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+}
+
+.delete-button {
+    background-color: #dc3545;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+.update-button {
+    background-color: #28a745;
+}
+
+.update-button:hover {
+    background-color: #218838;
+}
+
+/* 로딩 상태 스타일 */
+.loading {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: #6c757d;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 에러 상태 스타일 */
+.error {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .board-detail-container {
+        padding: 15px;
+    }
+
+    .detail-item {
+        flex-direction: column;
+    }
+
+    .detail-label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .back-button, .delete-button, .update-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
